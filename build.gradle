@@ -26,12 +26,9 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()
-
     mods {
         "${project.archives_base_name}" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
         }
     }
 }

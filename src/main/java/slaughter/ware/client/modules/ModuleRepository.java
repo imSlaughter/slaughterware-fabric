@@ -1,16 +1,30 @@
-package slaughter.ware.client.function.modules;
+package slaughter.ware.client.modules;
 
 import com.google.common.eventbus.Subscribe;
-import slaughter.ware.client.event.impl.EventKey;
-import slaughter.ware.client.function.modules.api.Module;
+import net.minecraft.client.util.InputUtil;
+import slaughter.ware.client.event.impl.EventUpdate;
+import slaughter.ware.client.functions.movement.AutoSprint;
+import slaughter.ware.client.functions.movement.Fly;
+import slaughter.ware.client.functions.visual.Ambience;
+import slaughter.ware.client.modules.api.Module;
+import slaughter.ware.client.utils.IMinecraft;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ModuleRepository {
 
     private final List<Module> modules = new ArrayList<>();
+    private final Map<Integer, Boolean> keyStates = new HashMap<>();
+
+    public void init() {
+        register(new AutoSprint());
+        register(new Ambience());
+        register(new Fly());
+    }
 
     public void register(Module module) {
         modules.add(module);
@@ -20,11 +34,31 @@ public class ModuleRepository {
         return Collections.unmodifiableList(modules);
     }
 
-    @Subscribe
-    public void onKey(EventKey event) {
+    public <T extends Module> T getModule(Class<T> moduleClass) {
         for (Module module : modules) {
-            if (module.getKey() == event.getKey()) {
+            if (moduleClass.isInstance(module)) {
+                return moduleClass.cast(module);
+            }
+        }
+        return null;
+    }
+
+    @Subscribe
+    public void onUpdate(EventUpdate event) {
+        if (IMinecraft.mc().player == null || IMinecraft.mc().world == null) {
+            return;
+        }
+
+        for (Module module : modules) {
+            boolean pressed = InputUtil.isKeyPressed(IMinecraft.window(), module.getKey());
+            boolean wasPressed = keyStates.getOrDefault(module.getKey(), false);
+            if (pressed && !wasPressed) {
                 module.toggle();
+            }
+            keyStates.put(module.getKey(), pressed);
+
+            if (module.isEnabled()) {
+                module.onUpdate();
             }
         }
     }

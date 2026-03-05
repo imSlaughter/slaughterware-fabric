@@ -1,4 +1,13 @@
 package slaughter.ware.client.modules.api;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ModuleInfo {
+    String name();
+    String description() default "";
+    String modulecategory() default "";
 }
+
+// не юзайте нахуй это дерьмо, окда?

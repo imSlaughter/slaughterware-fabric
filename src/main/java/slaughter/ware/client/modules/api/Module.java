@@ -1,20 +1,24 @@
-package slaughter.ware.client.function.modules.api;
+package slaughter.ware.client.modules.api;
 
 import lombok.Getter;
-import slaughter.ware.client.function.modules.ModuleCategory;
+import net.minecraft.client.MinecraftClient;
+import slaughter.ware.client.modules.ModuleCategory;
+import slaughter.ware.client.utils.IMinecraft;
 
 @Getter
-public class Module {
+public class Module implements IMinecraft {
 
     private final String name;
     private final int key;
     private final ModuleCategory category;
+    private final String description;
     private boolean enabled;
 
     public Module(String name, int key, ModuleCategory category) {
         this.name = name;
         this.key = key;
         this.category = category;
+        this.description = "";
     }
 
     public void toggle() {
@@ -30,5 +34,12 @@ public class Module {
     }
 
     protected void onDisable() {
+    }
+
+    public void onUpdate() {
+    }
+
+    protected MinecraftClient mc() {
+        return IMinecraft.mc();
     }
 }

@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
-    "game.MixinMinecraftClass"
+    "game.MixinMinecraftClass",
+    "game.MixinClientWorld"
   ],
   "server": [],
   "injectors": {

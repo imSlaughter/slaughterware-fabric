@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import slaughter.ware.client.event.api.Event;
-import slaughter.ware.client.function.modules.api.Module;
-import slaughter.ware.client.function.modules.ModuleRepository;
+import slaughter.ware.client.modules.api.Module;
+import slaughter.ware.client.modules.ModuleRepository;
 
 @Getter
 public class SlaughterWare implements ModInitializer {
@@ -20,6 +20,7 @@ public class SlaughterWare implements ModInitializer {
         instance = this;
         eventBus = new EventBus();
         moduleRepository = new ModuleRepository();
+        moduleRepository.init();
         eventBus.register(moduleRepository);
     }
 

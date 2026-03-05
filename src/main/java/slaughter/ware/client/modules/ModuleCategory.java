@@ -1,4 +1,4 @@
-package slaughter.ware.client.function.modules;
+package slaughter.ware.client.modules;
 
 public enum ModuleCategory {
 
